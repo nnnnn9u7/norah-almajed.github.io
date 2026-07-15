@@ -1,0 +1,224 @@
+/* ================================================
+   ABIS COLOR SYSTEM & DESIGN TOKENS
+   Comprehensive Color Palette for all UI Elements
+   ================================================ */
+
+:root {
+  /* ========== PRIMARY COLORS ========== */
+  --abis-orange-primary: #e87d34;
+  --abis-orange-dark: #d46a28;
+  --abis-orange-light: #f3a063;
+  --abis-orange-lighter: #fce4d3;
+  
+  --abis-blue-primary: #0d1f2d;
+  --abis-blue-dark: #060f17;
+  --abis-blue-light: #1a3a52;
+  --abis-blue-lighter: #2d5a7b;
+  
+  /* ========== SEMANTIC COLORS ========== */
+  --color-success: #10b981;
+  --color-success-light: #d1fae5;
+  --color-success-dark: #047857;
+  
+  --color-warning: #f59e0b;
+  --color-warning-light: #fef3c7;
+  --color-warning-dark: #d97706;
+  
+  --color-danger: #ef4444;
+  --color-danger-light: #fee2e2;
+  --color-danger-dark: #dc2626;
+  
+  --color-info: #3b82f6;
+  --color-info-light: #dbeafe;
+  --color-info-dark: #1d4ed8;
+  
+  /* ========== GRAYSCALE ========== */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f4f7f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  
+  /* ========== NEUTRAL COLORS ========== */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  
+  /* ========== BACKGROUND COLORS ========== */
+  --bg-primary: var(--color-white);
+  --bg-secondary: var(--color-gray-50);
+  --bg-tertiary: var(--color-gray-100);
+  --bg-dark: var(--abis-blue-primary);
+  
+  /* ========== TEXT COLORS ========== */
+  --text-primary: var(--abis-blue-primary);
+  --text-secondary: var(--color-gray-600);
+  --text-tertiary: var(--color-gray-500);
+  --text-on-dark: var(--color-white);
+  
+  /* ========== BORDER COLORS ========== */
+  --border-light: var(--color-gray-200);
+  --border-medium: var(--color-gray-300);
+  --border-dark: var(--color-gray-400);
+  
+  /* ========== SHADOWS ========== */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  
+  /* ========== GRADIENTS ========== */
+  --gradient-orange: linear-gradient(135deg, var(--abis-orange-primary) 0%, var(--abis-orange-dark) 100%);
+  --gradient-blue: linear-gradient(135deg, var(--abis-blue-primary) 0%, var(--abis-blue-light) 100%);
+  --gradient-success: linear-gradient(135deg, var(--color-success) 0%, var(--color-success-dark) 100%);
+  --gradient-warning: linear-gradient(135deg, var(--color-warning) 0%, var(--color-warning-dark) 100%);
+  --gradient-danger: linear-gradient(135deg, var(--color-danger) 0%, var(--color-danger-dark) 100%);
+  
+  /* ========== TRANSITIONS ========== */
+  --transition-fast: var(--dur-fast) var(--ease-out);
+  --transition-base: var(--dur-base) var(--ease-out);
+  --transition-slow: var(--dur-slow) var(--ease-out);
+
+  /* ========== EASING ========== */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  /* ========== DURATION (6 precise steps) ========== */
+  --dur-instant: 100ms;   /* button press, active states */
+  --dur-fast: 160ms;      /* hover states, tooltips */
+  --dur-base: 220ms;      /* dropdowns, badges, row hovers */
+  --dur-medium: 320ms;    /* cards, panels sliding in */
+  --dur-slow: 420ms;      /* modals, drawers, page reveals */
+  --dur-crawl: 600ms;     /* first-load stagger, marketing reveals */
+
+  /* ========== SPACING SCALE ========== */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ========== BORDER RADIUS SCALE ========== */
+  --radius-sm: 6px;       /* badges, tags */
+  --radius-md: 10px;      /* buttons, inputs, small cards */
+  --radius-lg: 16px;      /* dashboard panels */
+  --radius-xl: 22px;      /* sidebar, modals */
+  --radius-full: 9999px;
+
+  /* ========== Z-INDEX SCALE ========== */
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-modal-backdrop: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+  --z-tooltip: 600;
+
+  /* ========== FLUID TYPE SCALE ========== */
+  --text-xs: clamp(0.72rem, 1.5vw, 0.75rem);
+  --text-sm: clamp(0.82rem, 2vw, 0.875rem);
+  --text-base: clamp(0.9rem, 2.5vw, 1rem);
+  --text-lg: clamp(1rem, 3vw, 1.125rem);
+  --text-xl: clamp(1.1rem, 3.5vw, 1.25rem);
+  --text-2xl: clamp(1.25rem, 4vw, 1.5rem);
+  --text-3xl: clamp(1.4rem, 5vw, 2rem);
+
+  /* ===== ABSORBED CHROME TOKENS (formerly --gm-* in dashboard-chrome.css) ===== */
+  /* Maps the deleted dashboard-chrome.css token system onto the canonical scale
+     so any legacy --gm-* reference resolves through one source of truth. */
+  --gm-bg: var(--bg-secondary);
+  --gm-surface: var(--color-white);
+  --gm-surface-soft: var(--bg-secondary);
+  --gm-surface-tint: var(--abis-orange-lighter);
+  --gm-line: var(--border-light);
+  --gm-line-strong: var(--border-medium);
+  --gm-text: var(--text-primary);
+  --gm-muted: var(--text-secondary);
+  --gm-blue: var(--abis-blue-primary);
+  --gm-orange: var(--abis-orange-primary);
+  --gm-orange-soft: var(--abis-orange-light);
+  --gm-green: var(--color-success);
+  --gm-red: var(--color-danger);
+  --gm-yellow: var(--color-warning);
+  --gm-shadow: var(--shadow-lg);
+  --gm-radius-xl: var(--radius-xl);
+  --gm-radius-lg: var(--radius-lg);
+  --gm-radius-md: var(--radius-md);
+
+  /* ========== SIDEBAR (shared dark chrome surface) ========== */
+  --sidebar-gradient: linear-gradient(180deg, #0d1f2d 0%, #060f17 100%);
+  --sidebar-shadow: 0 24px 48px rgba(7, 16, 24, 0.28);
+  --sidebar-width: 280px;
+
+  /* ========== RESPONSIVE / DEVICE TOKENS (formerly in responsive-system.css) ========== */
+  --device-phone-max: 479px;
+  --device-tablet-max: 767px;
+  --device-laptop-max: 1023px;
+  --device-desktop-max: 1279px;
+  --responsive-gutter: clamp(12px, 2vw, 28px);
+  --responsive-gap: clamp(12px, 1.8vw, 24px);
+  --responsive-card-radius: clamp(16px, 2vw, 28px);
+  --responsive-touch-target: 44px;
+}
+
+/* ========== UTILITY CLASSES ========== */
+
+/* Text Colors */
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
+.text-white { color: var(--color-white); }
+.text-orange { color: var(--abis-orange-primary); }
+.text-blue { color: var(--abis-blue-primary); }
+.text-success { color: var(--color-success); }
+.text-warning { color: var(--color-warning); }
+.text-danger { color: var(--color-danger); }
+.text-info { color: var(--color-info); }
+
+/* Background Colors */
+.bg-primary { background-color: var(--bg-primary); }
+.bg-secondary { background-color: var(--bg-secondary); }
+.bg-tertiary { background-color: var(--bg-tertiary); }
+.bg-white { background-color: var(--color-white); }
+.bg-orange { background-color: var(--abis-orange-primary); }
+.bg-blue { background-color: var(--abis-blue-primary); }
+.bg-success { background-color: var(--color-success); }
+.bg-warning { background-color: var(--color-warning); }
+.bg-danger { background-color: var(--color-danger); }
+.bg-info { background-color: var(--color-info); }
+
+/* Light Background Colors */
+.bg-orange-light { background-color: var(--abis-orange-lighter); }
+.bg-blue-light { background-color: var(--abis-blue-lighter); }
+.bg-success-light { background-color: var(--color-success-light); }
+.bg-warning-light { background-color: var(--color-warning-light); }
+.bg-danger-light { background-color: var(--color-danger-light); }
+.bg-info-light { background-color: var(--color-info-light); }
+
+/* Border Colors */
+.border-light { border-color: var(--border-light); }
+.border-medium { border-color: var(--border-medium); }
+.border-dark { border-color: var(--border-dark); }
+
+/* Gradients */
+.gradient-orange { background: var(--gradient-orange); }
+.gradient-blue { background: var(--gradient-blue); }
+.gradient-success { background: var(--gradient-success); }
+.gradient-warning { background: var(--gradient-warning); }
+.gradient-danger { background: var(--gradient-danger); }
+
+/* Shadows */
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-xl { box-shadow: var(--shadow-xl); }
+.shadow-2xl { box-shadow: var(--shadow-2xl); }

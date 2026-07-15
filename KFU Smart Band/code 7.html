@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6A0DAD",
+                        "accent-gold": "#f9d406",
+                        "background-dark": "#0F0D13",
+                        "dark-card": "#1A1621",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "Noto Sans Arabic", "sans-serif"],
+                        "arabic": ["Noto Sans Arabic", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "1rem", "2xl": "1.5rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        :root {
+            --bg-color: #0F0D13;
+            --purple-main: #6A0DAD;
+            --gold-accent: #f9d406;
+        }
+        body {
+            font-family: 'Noto Sans Arabic', 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .ios-blur {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-white min-h-screen flex flex-col overflow-hidden">
+<nav class="sticky top-0 z-50 bg-[#0F0D13]/90 ios-blur px-4 py-5 flex items-center justify-between border-b border-white/5">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-white/70 cursor-pointer">arrow_forward</span>
+<h1 class="text-lg font-bold">التسليم النهائي</h1>
+</div>
+<div class="flex items-center gap-2 text-accent-gold">
+<span class="material-symbols-outlined text-2xl">verified</span>
+</div>
+</nav>
+<main class="flex-grow flex flex-col items-center justify-center px-6 py-8">
+<div class="relative mb-10">
+<div class="absolute inset-0 bg-[var(--purple-main)]/30 blur-[60px] rounded-full scale-150"></div>
+<div class="relative bg-[var(--purple-main)] w-36 h-36 rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(106,13,213,0.5)] border-4 border-white/20">
+<span class="material-symbols-outlined text-white text-7xl">check_circle</span>
+</div>
+</div>
+<div class="text-center mb-10">
+<h2 class="text-3xl font-bold mb-3 tracking-tight text-white">تمت المطابقة بنجاح</h2>
+<p class="text-white/50 text-lg">تم تأكيد البيانات وجاهزية التسليم</p>
+</div>
+<div class="w-full max-w-sm bg-dark-card border border-white/10 rounded-3xl p-6 mb-10 shadow-2xl">
+<div class="flex flex-col items-center gap-4">
+<div class="w-20 h-20 rounded-full overflow-hidden border-4 border-[var(--purple-main)] shadow-lg">
+<img alt="Receiver Photo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSsuFn-Ys7HcP-yPa-Ys6tlL-lD_cuMfwksBm3Kbbw2cS--05xSmOlkRn0kIPRlsrpWn_3QaDD8wsfAg2v-L9urW71ba8B8U0YHMfjIoicEciku-aMzNuF0Kyy06lWvnWS5RiJI-u8G2niJNlF8RxSPHT7h2HbUepI4HLG2RZK9je9KI_-iD4yzU858HaVzDAXF2_ELN6f6-goyBYxqkoPVcStLgwt_P-fLiNv7wh3MSUE6VqKdxOFXEIjlnbnTw1Zmr-jcVb8mLA"/>
+</div>
+<div class="text-center">
+<p class="text-xs text-[var(--purple-main)] font-bold mb-1 uppercase tracking-widest">المستلم المعتمد</p>
+<h3 class="text-2xl font-bold text-white mb-1">سارة جابر الأمير</h3>
+<p class="text-white/40 text-sm">تم التحقق عبر البصمة الحيوية</p>
+</div>
+</div>
+<div class="h-px bg-white/5 w-full my-6"></div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white/5 rounded-2xl p-3 border border-white/5">
+<span class="text-white/40 text-[10px] block mb-1">رقم الحالة</span>
+<span class="font-bold text-sm">#1092-A</span>
+</div>
+<div class="bg-white/5 rounded-2xl p-3 border border-white/5">
+<span class="text-white/40 text-[10px] block mb-1">وقت الإغلاق</span>
+<span class="font-bold text-sm">09:45 م</span>
+</div>
+</div>
+</div>
+<div class="w-full max-w-sm flex flex-col gap-4">
+<a class="flex items-center justify-center gap-3 bg-[var(--purple-main)] hover:brightness-110 text-white w-full py-5 rounded-2xl font-bold text-xl transition-all active:scale-[0.98] shadow-[0_10px_20px_rgba(106,13,213,0.3)]" href="tel:0500191113">
+<span class="material-symbols-outlined text-2xl">call</span>
+<span dir="ltr">0500191113</span>
+</a>
+<a class="flex items-center justify-center gap-3 bg-white/5 hover:bg-white/10 text-white/90 w-full py-5 rounded-2xl font-bold text-lg transition-all active:scale-[0.98] border border-white/10 backdrop-blur-sm" href="code 2.html">
+<span class="material-symbols-outlined">lock_reset</span>
+<span>إغلاق الحالة وتسليم الطفل</span>
+</a>
+</div>
+</main>
+<footer class="p-6 text-center">
+<div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-accent-gold/5 border border-accent-gold/20">
+<span class="w-2 h-2 rounded-full bg-accent-gold animate-pulse"></span>
+<span class="text-accent-gold text-xs font-bold uppercase tracking-[0.2em]">نظام عين كفو للأمن</span>
+</div>
+</footer>
+
+</body></html>

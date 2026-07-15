@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-gold": "#f9d406",
+                        "brand-purple": "#6A0DAD",
+                        "light-gray": "#F5F5F7",
+                    },
+                    fontFamily: {
+                        "sans": ["Noto Sans Arabic", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        :root {
+            --primary-gold: #f9d406;
+            --brand-purple: #6A0DAD;
+        }
+        body {
+            font-family: 'Noto Sans Arabic', sans-serif;
+            background-color: #ffffff;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .ios-shadow {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen flex flex-col">
+<nav class="sticky top-0 z-50 bg-brand-purple text-white px-5 py-6 flex items-center justify-between shadow-lg">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-white cursor-pointer">arrow_forward</span>
+<h1 class="text-xl font-bold">حجز التذاكر</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-white cursor-pointer">info</span>
+</div>
+</nav>
+<main class="flex-grow flex flex-col bg-white">
+<div class="relative h-48 w-full bg-brand-purple overflow-hidden">
+<div class="absolute inset-0 opacity-20">
+<svg height="100%" preserveAspectRatio="none" viewBox="0 0 100 100" width="100%">
+<path d="M0 100 L100 0 L100 100 Z" fill="white"></path>
+<path d="M0 0 L100 0 L0 100 Z" fill="url(#grad1)"></path>
+<defs>
+<linearGradient id="grad1" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:var(--primary-gold);stop-opacity:0.3"></stop>
+<stop offset="100%" style="stop-color:var(--brand-purple);stop-opacity:0"></stop>
+</linearGradient>
+</defs>
+</svg>
+</div>
+<div class="relative z-10 p-6 flex flex-col justify-center h-full">
+<div class="inline-flex bg-primary-gold text-brand-purple text-xs font-bold px-3 py-1 rounded-full w-fit mb-3">ليالي كفو</div>
+<h2 class="text-white text-3xl font-bold mb-1">احجز تذكرتك الآن</h2>
+<p class="text-white/80 text-sm">استمتع بتجربة آمنة وممتعة لعائلتك</p>
+</div>
+<div class="absolute bottom-0 left-0 right-0 h-6 bg-white rounded-t-[24px]"></div>
+</div>
+<div class="px-6 py-4">
+<h3 class="text-brand-purple text-lg font-bold">فئات التذاكر</h3>
+<p class="text-slate-400 text-xs">يرجى تحديد الكمية لكل فئة</p>
+</div>
+<div class="flex flex-col gap-4 px-6">
+<div class="bg-white border-2 border-primary-gold/30 rounded-2xl p-4 ios-shadow flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="bg-brand-purple/5 text-brand-purple p-3 rounded-xl">
+<span class="material-symbols-outlined text-3xl">person</span>
+</div>
+<div>
+<p class="text-slate-800 font-bold">تذكرة زائر بالغ</p>
+<p class="text-brand-purple font-bold text-sm">15 ر.س</p>
+</div>
+</div>
+<div class="flex items-center gap-4 bg-light-gray rounded-xl p-1">
+<button class="w-8 h-8 flex items-center justify-center bg-white rounded-lg shadow-sm font-bold text-brand-purple">-</button>
+<span class="font-bold w-4 text-center">1</span>
+<button class="w-8 h-8 flex items-center justify-center bg-brand-purple text-white rounded-lg shadow-sm font-bold">+</button>
+</div>
+</div>
+<div class="bg-white border-2 border-primary-gold/30 rounded-2xl p-4 ios-shadow">
+<div class="flex items-start justify-between">
+<div class="flex items-start gap-4">
+<div class="bg-brand-purple/5 text-brand-purple p-3 rounded-xl">
+<span class="material-symbols-outlined text-3xl">child_care</span>
+</div>
+<div class="flex-1">
+<p class="text-slate-800 font-bold">تذكرة طفل + سوار أمان</p>
+<div class="flex items-center gap-1.5 my-1.5 py-1 px-2 bg-brand-purple/10 rounded-lg w-fit">
+<span class="material-symbols-outlined text-xs text-brand-purple font-bold">shield_person</span>
+<p class="text-[10px] text-brand-purple font-semibold">تتضمن سوار "عين كفو" لسلامة طفلك</p>
+</div>
+<p class="text-brand-purple font-bold text-sm">5 ر.س</p>
+</div>
+</div>
+<div class="flex items-center gap-4 bg-light-gray rounded-xl p-1 mt-1">
+<button class="w-8 h-8 flex items-center justify-center bg-white rounded-lg shadow-sm font-bold text-brand-purple">-</button>
+<span class="font-bold w-4 text-center">0</span>
+<button class="w-8 h-8 flex items-center justify-center bg-brand-purple text-white rounded-lg shadow-sm font-bold">+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-8 px-6 pb-24">
+<div class="bg-light-gray/50 border border-dashed border-slate-200 rounded-2xl p-5 flex items-center justify-between">
+<div>
+<p class="text-slate-500 text-sm">إجمالي المبلغ</p>
+<p class="text-xs text-slate-400 mt-0.5">شامل الضريبة</p>
+</div>
+<div class="text-left">
+<span class="text-2xl font-bold text-brand-purple">15</span>
+<span class="text-sm font-bold text-brand-purple mr-1">ر.س</span>
+</div>
+</div>
+</div>
+</main>
+<div class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md p-6 border-t border-slate-100">
+<a class="w-full bg-brand-purple hover:brightness-110 active:scale-[0.98] transition-all text-white font-bold py-4 rounded-2xl text-lg flex items-center justify-center gap-3 shadow-[0_8px_20px_rgba(106,13,213,0.2)]" href="code 2.html">
+<span>الدفع وإتمام الحجز</span>
+<span class="material-symbols-outlined">payments</span>
+</a>
+<div class="h-4"></div>
+</div>
+
+</body></html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABIS — Unified Dashboard Shell (demo)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<!-- Real ABIS stylesheets, single source of truth -->
+<link rel="stylesheet" href="assets/colors-system.css">
+<link rel="stylesheet" href="components/components.css">
+<link rel="stylesheet" href="assets/responsive-system.css">
+<style>
+  /* Demo-only: the product itself uses these tokens; this just sets the page frame. */
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Inter', system-ui, sans-serif; color: var(--text-primary); background: var(--bg-secondary); }
+  .abis-form-grid { display: grid; gap: var(--space-4); }
+  .abis-form-grid.two { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .abis-form-grid.three { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .abis-field { display: grid; gap: var(--space-2); }
+  .abis-field label { font-size: var(--text-sm); font-weight: 600; color: var(--text-secondary); }
+  .panel-row { display: grid; grid-template-columns: 1.6fr 1fr; gap: var(--space-6); align-items: start; }
+  @media (max-width: 900px){ .panel-row { grid-template-columns: 1fr; } }
+  .mini-list { display: grid; gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+  .mini-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-3) var(--space-4); border: 1px solid var(--border-light); border-radius: var(--radius-md); background: var(--bg-secondary); }
+  .mini-row strong { font-size: var(--text-sm); }
+  .mini-row small { color: var(--text-secondary); display: block; font-size: var(--text-xs); }
+  .prog-line { display: grid; gap: var(--space-2); }
+  .prog-line .prog-meta { display: flex; justify-content: space-between; font-size: var(--text-sm); }
+  .prog-line .prog-meta span:last-child { color: var(--text-secondary); }
+</style>
+</head>
+<body>
+
+<div class="abis-shell">
+
+  <!-- Mobile sticky bar (visible ≤1023px) -->
+  <div class="abis-mobile-bar">
+    <div class="abis-mobile-brand"><img src="images/brand/abis.png" alt="ABIS" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'abis-sidebar-mark',textContent:'AB'}))"><span data-brand>ABIS</span></div>
+    <button class="abis-hamburger" type="button" aria-label="Open menu" aria-controls="abisSidebar" aria-expanded="false" onclick="abisToggleSidebar(true)">&#9776;</button>
+  </div>
+  <div class="abis-sidebar-backdrop" data-abis-backdrop onclick="abisToggleSidebar(false)"></div>
+
+  <!-- Sidebar -->
+  <aside class="abis-sidebar" id="abisSidebar" aria-label="Primary">
+    <div class="abis-sidebar-logo">
+      <img src="images/brand/abis.png" alt="ABIS" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'abis-sidebar-mark',textContent:'AB'}))">
+      <div><strong data-brand>ABIS</strong><span>Workforce Portal</span></div>
+    </div>
+    <nav class="abis-nav" id="abisNav">
+      <div class="abis-nav-label">Menu</div>
+    </nav>
+    <div class="abis-sidebar-user">
+      <span class="abis-avatar" id="userInitials">AB</span>
+      <div><strong id="userName">ABIS User</strong><span id="userRole">Portal</span></div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="abis-main">
+    <header class="abis-topbar">
+      <div class="abis-topbar-titles">
+        <nav class="abis-breadcrumb" aria-label="Breadcrumb">
+          <a href="#">Portal</a><span>/</span><span id="crumb">Dashboard</span>
+        </nav>
+        <h1 id="pageTitle">Dashboard</h1>
+        <p id="pageSub">Overview of activity across your workspace.</p>
+      </div>
+      <div class="abis-topbar-actions">
+        <button class="btn btn-secondary"><i class="fa-solid fa-arrow-down-to-line"></i> Export</button>
+        <button class="btn btn-primary" id="primaryCta"><i class="fa-solid fa-plus"></i> New</button>
+      </div>
+    </header>
+
+    <section class="abis-stat-grid" id="statGrid"></section>
+
+    <div class="panel-row">
+      <section class="abis-panel">
+        <div class="abis-panel-head">
+          <h2 id="tableTitle">Records</h2>
+          <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-filter"></i> Filter</button>
+        </div>
+        <div class="abis-table-wrap">
+          <table class="abis-table">
+            <thead><tr id="tableHead"></tr></thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="abis-panel">
+        <div class="abis-panel-head"><h3 id="sideTitle">Progress</h3></div>
+        <div class="mini-list" id="progressList"></div>
+        <div class="abis-empty-state" style="margin-top:var(--space-5)">
+          <span class="abis-empty-art"><i class="fa-regular fa-folder-open"></i></span>
+          <strong>Nothing else queued</strong>
+          <span>New items will appear here as they arrive.</span>
+        </div>
+      </section>
+    </div>
+
+    <section class="abis-panel">
+      <div class="abis-panel-head"><h3>Quick entry</h3></div>
+      <form class="abis-form-grid three" onsubmit="return false">
+        <div class="abis-field"><label>Full name</label><input class="form-input" placeholder="e.g. Omar Al-Harbi"></div>
+        <div class="abis-field"><label>Site</label>
+          <select class="form-select"><option>Jubail</option><option>Yanbu</option><option>Ras Tanura</option></select>
+        </div>
+        <div class="abis-field"><label>Status</label>
+          <select class="form-select"><option>Active</option><option>Pending</option><option>Draft</option></select>
+        </div>
+      </form>
+    </section>
+  </main>
+</div>
+
+<script>
+/* ---------- Role definitions (mirror the data passed to abisShellStart) ---------- */
+var BADGE = { active:'is-active', complete:'is-complete', pending:'is-pending', warning:'is-warning',
+              rejected:'is-rejected', danger:'is-danger', submitted:'is-submitted', info:'is-info',
+              draft:'is-draft', neutral:'is-neutral' };
+
+function badge(text, tone){ return '<span class="abis-badge '+(BADGE[tone]||'is-neutral')+'">'+text+'</span>'; }
+
+var NAV_COMMON = function(active, items){ return items; };
+
+var ROLES = {
+  tech: {
+    brand:'ABIS', title:'Tech Supervisor', sub:'Crew readiness, equipment checks, and live job-site status across assigned sites.',
+    crumb:'Tech Supervisor', cta:'Log inspection', tableTitle:'Active jobs', sideTitle:'Site readiness',
+    user:{name:'Faisal Otaibi', role:'Tech Supervisor', initials:'FO'},
+    nav:[['overview','Overview','fa-solid fa-gauge-high',1],['jobs','Job sites','fa-solid fa-helmet-safety'],['equipment','Equipment','fa-solid fa-gears'],['inspections','Inspections','fa-solid fa-clipboard-check'],['crew','Crew','fa-solid fa-people-group'],['reports','Reports','fa-solid fa-chart-column']],
+    stats:[['Active jobs',18,'+3 this week','up','fa-solid fa-helmet-safety'],['Crew on site',142,'+8 today','up','fa-solid fa-people-group'],['Open inspections',7,'2 overdue','down','fa-solid fa-clipboard-check'],['Equipment ready','96%','+1.2%','up','fa-solid fa-gears']],
+    cols:['Job / ID','Site','Crew','Status'],
+    rows:[['Flange facing — J-4821','Jubail','12','active'],['Bolt tensioning — J-4830','Yanbu','8','pending'],['Cold cutting — J-4811','Ras Tanura','6','complete'],['Sandblasting — J-4842','Jubail','15','active'],['Weld testing — J-4799','Yanbu','4','rejected']],
+    prog:[['Jubail readiness',92],['Yanbu readiness',78],['Ras Tanura readiness',64]]
+  },
+  hr: {
+    brand:'ABIS', title:'HR', sub:'Headcount, onboarding pipeline, and compliance status for the workforce.',
+    crumb:'Human Resources', cta:'Add employee', tableTitle:'Recent hires', sideTitle:'Onboarding',
+    user:{name:'Reem Al-Dossari', role:'HR Lead', initials:'RD'},
+    nav:[['overview','Overview','fa-solid fa-gauge-high',1],['people','People','fa-solid fa-users'],['onboarding','Onboarding','fa-solid fa-user-plus'],['leave','Leave','fa-solid fa-plane-departure'],['compliance','Compliance','fa-solid fa-shield-halved'],['payroll','Payroll','fa-solid fa-money-check-dollar']],
+    stats:[['Total headcount',1284,'+24 this month','up','fa-solid fa-users'],['Onboarding',31,'+6','up','fa-solid fa-user-plus'],['On leave',47,'-3','down','fa-solid fa-plane-departure'],['Compliance','98%','+0.5%','up','fa-solid fa-shield-halved']],
+    cols:['Name','Role','Site','Status'],
+    rows:[['Omar Al-Harbi','Rigger','Jubail','active'],['Layla Nasser','Safety Officer','Yanbu','pending'],['Yusuf Karim','Welder','Ras Tanura','submitted'],['Mona Saleh','QA Inspector','Jubail','active'],['Tariq Aziz','Fitter','Yanbu','draft']],
+    prog:[['Documents collected',88],['Inductions complete',72],['Equipment issued',95]]
+  },
+  manager: {
+    brand:'ABIS', title:'Manager', sub:'Team performance, project health, and resource allocation at a glance.',
+    crumb:'Manager', cta:'New review', tableTitle:'Team workload', sideTitle:'Targets',
+    user:{name:'Hassan Qahtani', role:'Operations Manager', initials:'HQ'},
+    nav:[['overview','Overview','fa-solid fa-gauge-high',1],['teams','Teams','fa-solid fa-people-group'],['projects','Projects','fa-solid fa-diagram-project'],['resources','Resources','fa-solid fa-boxes-stacked'],['reviews','Reviews','fa-solid fa-star'],['reports','Reports','fa-solid fa-chart-column']],
+    stats:[['Active projects',22,'+2','up','fa-solid fa-diagram-project'],['Utilization','87%','+4%','up','fa-solid fa-gauge'],['Open risks',5,'-2','down','fa-solid fa-triangle-exclamation'],['On-time delivery','91%','+1.8%','up','fa-solid fa-clock']],
+    cols:['Team','Lead','Load','Status'],
+    rows:[['Piping A','Khalid M.','High','warning'],['Civil East','Sara T.','Balanced','active'],['Bolting','Nawaf R.','Low','complete'],['Coatings','Hind A.','High','warning'],['QA/QC','Sami Z.','Balanced','active']],
+    prog:[['Q2 revenue target',76],['Safety target',94],['Hiring target',61]]
+  },
+  branch: {
+    brand:'ABIS', title:'Branch', sub:'Regional branch operations, staffing, and client activity across the Eastern Province.',
+    crumb:'Branch', cta:'New request', tableTitle:'Branch activity', sideTitle:'Capacity',
+    user:{name:'Abdullah Zahrani', role:'Branch Manager', initials:'AZ'},
+    nav:[['overview','Overview','fa-solid fa-gauge-high',1],['staff','Staff','fa-solid fa-id-badge'],['clients','Clients','fa-solid fa-handshake'],['assets','Assets','fa-solid fa-warehouse'],['schedule','Schedule','fa-solid fa-calendar-days'],['reports','Reports','fa-solid fa-chart-column']],
+    stats:[['Staff on roll',318,'+12','up','fa-solid fa-id-badge'],['Active clients',26,'+1','up','fa-solid fa-handshake'],['Equipment out',73,'+5','up','fa-solid fa-warehouse'],['Branch uptime','99.2%','+0.3%','up','fa-solid fa-bolt']],
+    cols:['Client','Project','Crew','Status'],
+    rows:[['SABIC','Turnaround 12','40','active'],['SATORP','Maintenance','22','pending'],['Sadara','Bolt-up','18','complete'],['Aramco','Inspection','12','submitted'],['Maaden','Scaffolding','30','active']],
+    prog:[['Crew capacity used',81],['Equipment in service',69],['Schedule adherence',88]]
+  },
+  employee: {
+    brand:'ABIS', title:'Employee', sub:'Your assignments, timesheets, certifications, and requests in one place.',
+    crumb:'My space', cta:'Submit request', tableTitle:'My assignments', sideTitle:'Certifications',
+    user:{name:'Omar Al-Harbi', role:'Rigger', initials:'OH'},
+    nav:[['overview','Overview','fa-solid fa-gauge-high',1],['tasks','My tasks','fa-solid fa-list-check'],['timesheet','Timesheet','fa-solid fa-clock'],['payslips','Payslips','fa-solid fa-receipt'],['certs','Certifications','fa-solid fa-certificate'],['requests','Requests','fa-solid fa-inbox']],
+    stats:[['Hours this week',38,'+2 vs target','up','fa-solid fa-clock'],['Open tasks',4,'-1','down','fa-solid fa-list-check'],['Certs valid',6,'1 expiring','warning','fa-solid fa-certificate'],['Leave balance',14,'days','','fa-solid fa-plane-departure']],
+    cols:['Task','Site','Due','Status'],
+    rows:[['Rig inspection','Jubail','Today','pending'],['Toolbox talk','Jubail','Tomorrow','submitted'],['Load test support','Yanbu','Fri','active'],['Permit renewal','—','Next wk','draft'],['Safety refresher','Jubail','Done','complete']],
+    prog:[['H2S certification',100],['Working at height',80],['First aid',45]]
+  },
+  applicant: {
+    brand:'ABIS', title:'Applicant', sub:'Track your application, complete your profile, and respond to interview requests.',
+    crumb:'Careers', cta:'Complete profile', tableTitle:'My applications', sideTitle:'Profile strength',
+    user:{name:'Khalid Mutairi', role:'Applicant', initials:'KM'},
+    nav:[['overview','Overview','fa-solid fa-gauge-high',1],['applications','Applications','fa-solid fa-file-lines'],['profile','Profile','fa-solid fa-user'],['documents','Documents','fa-solid fa-folder'],['interviews','Interviews','fa-solid fa-comments'],['offers','Offers','fa-solid fa-envelope-open-text']],
+    stats:[['Applications',3,'1 new','info','fa-solid fa-file-lines'],['In review',2,'updated','info','fa-solid fa-hourglass-half'],['Interviews',1,'scheduled','info','fa-solid fa-comments'],['Profile','82%','complete','up','fa-solid fa-user']],
+    cols:['Role','Site','Submitted','Status'],
+    rows:[['Mechanical Fitter','Jubail','12 May','submitted'],['Scaffolder','Yanbu','3 May','pending'],['Welder (6G)','Ras Tanura','28 Apr','rejected'],['Rigger','Jubail','20 Apr','complete'],['QA Trainee','Yanbu','15 Apr','draft']],
+    prog:[['Personal details',100],['Experience',90],['Certifications',55]]
+  },
+  pm: {
+    brand:'ABIS', title:'Project Manager', sub:'Schedule, budget, milestones, and team health for your active projects.',
+    crumb:'Projects', cta:'Add milestone', tableTitle:'Project portfolio', sideTitle:'Budget burn',
+    user:{name:'Nadia Farouk', role:'Project Manager', initials:'NF'},
+    nav:[['overview','Overview','fa-solid fa-gauge-high',1],['projects','Projects','fa-solid fa-diagram-project'],['schedule','Schedule','fa-solid fa-calendar-days'],['budget','Budget','fa-solid fa-sack-dollar'],['team','Team','fa-solid fa-people-group'],['reports','Reports','fa-solid fa-chart-column']],
+    stats:[['Active projects',9,'+1','up','fa-solid fa-diagram-project'],['Milestones due',6,'this month','warning','fa-solid fa-flag-checkered'],['Budget used','64%','on track','up','fa-solid fa-sack-dollar'],['Schedule var.','-2d','ahead','up','fa-solid fa-calendar-days']],
+    cols:['Project','Client','Progress','Status'],
+    rows:[['Turnaround 12','SABIC','72%','active'],['Tank farm rehab','SATORP','45%','warning'],['Pipe rack EPC','Sadara','88%','complete'],['Jetty maintenance','Aramco','30%','pending'],['Bolt-up phase 2','Maaden','60%','active']],
+    prog:[['Labor budget',64],['Equipment budget',71],['Contingency',22]]
+  },
+  admin: {
+    brand:'ABIS', title:'Admin', sub:'System health, user access, audit logs, and platform-wide configuration.',
+    crumb:'Administration', cta:'Add user', tableTitle:'Users', sideTitle:'System health',
+    user:{name:'System Admin', role:'Administrator', initials:'SA'},
+    nav:[['overview','Overview','fa-solid fa-gauge-high',1],['users','Users','fa-solid fa-users-gear'],['roles','Roles','fa-solid fa-user-shield'],['audit','Audit log','fa-solid fa-scroll'],['monitoring','Monitoring','fa-solid fa-wave-square'],['settings','Settings','fa-solid fa-sliders']],
+    stats:[['Total users',1342,'+18','up','fa-solid fa-users-gear'],['Active sessions',286,'live','info','fa-solid fa-wave-square'],['Failed logins',12,'24h','down','fa-solid fa-triangle-exclamation'],['Uptime','99.98%','30d','up','fa-solid fa-server']],
+    cols:['User','Role','Last seen','Status'],
+    rows:[['Reem Al-Dossari','HR Lead','2m ago','active'],['Faisal Otaibi','Tech Supervisor','9m ago','active'],['Nadia Farouk','Project Manager','1h ago','pending'],['Hassan Qahtani','Ops Manager','3h ago','active'],['Guest_4471','Applicant','2d ago','draft']],
+    prog:[['CPU load',38],['Storage used',57],['DB connections',44]]
+  }
+};
+
+function renderRole(key){
+  var r = ROLES[key] || ROLES.tech;
+  document.querySelectorAll('[data-brand]').forEach(function(el){ el.textContent = r.brand; });
+  document.getElementById('userInitials').textContent = r.user.initials;
+  document.getElementById('userName').textContent = r.user.name;
+  document.getElementById('userRole').textContent = r.user.role;
+  document.getElementById('crumb').textContent = r.crumb;
+  document.getElementById('pageTitle').textContent = r.title + ' Dashboard';
+  document.getElementById('pageSub').textContent = r.sub;
+  document.getElementById('primaryCta').innerHTML = '<i class="fa-solid fa-plus"></i> ' + r.cta;
+  document.getElementById('tableTitle').textContent = r.tableTitle;
+  document.getElementById('sideTitle').textContent = r.sideTitle;
+
+  // Nav
+  var nav = document.getElementById('abisNav');
+  nav.innerHTML = '<div class="abis-nav-label">Menu</div>';
+  r.nav.forEach(function(item){
+    var active = item[3] ? ' active' : '';
+    var cur = item[3] ? ' aria-current="page"' : '';
+    nav.insertAdjacentHTML('beforeend',
+      '<a class="abis-nav-link'+active+'" href="#"'+cur+'><span class="abis-nav-icon"><i class="'+item[2]+'"></i></span><span>'+item[1]+'</span></a>');
+  });
+
+  // Stats
+  var sg = document.getElementById('statGrid');
+  sg.innerHTML = '';
+  r.stats.forEach(function(s){
+    var label=s[0], value=s[1], trend=s[2], dir=s[3], icon=s[4];
+    var numeric = typeof value === 'number';
+    var data = numeric ? ' data-value="'+value+'"' : '';
+    var arrow = dir==='up'?'&#9650;':(dir==='down'?'&#9660;':(dir==='warning'?'&#9650;':''));
+    var trendClass = dir==='warning' ? 'down' : dir;
+    sg.insertAdjacentHTML('beforeend',
+      '<article class="abis-stat-card abis-reveal">'+
+        '<span class="abis-stat-label"><i class="'+icon+'"></i> '+label+'</span>'+
+        '<span class="abis-stat-value"'+data+'>'+value+'</span>'+
+        (trend?'<span class="abis-stat-trend '+(trendClass||'')+'">'+arrow+' '+trend+'</span>':'')+
+      '</article>');
+  });
+
+  // Table
+  var th = document.getElementById('tableHead'); th.innerHTML = '';
+  r.cols.forEach(function(c){ th.insertAdjacentHTML('beforeend','<th>'+c+'</th>'); });
+  var tb = document.getElementById('tableBody'); tb.innerHTML = '';
+  r.rows.forEach(function(row){
+    var cells = row.map(function(cell, i){
+      if (i === row.length - 1) return '<td>'+badge(cell.charAt(0).toUpperCase()+cell.slice(1), cell)+'</td>';
+      return '<td>'+cell+'</td>';
+    }).join('');
+    tb.insertAdjacentHTML('beforeend','<tr class="abis-reveal">'+cells+'</tr>');
+  });
+
+  // Progress
+  var pl = document.getElementById('progressList'); pl.innerHTML = '';
+  r.prog.forEach(function(p){
+    pl.insertAdjacentHTML('beforeend',
+      '<div class="prog-line"><div class="prog-meta"><span>'+p[0]+'</span><span>'+p[1]+'%</span></div>'+
+      '<div class="abis-progress"><span data-progress="'+p[1]+'"></span></div></div>');
+  });
+
+  bindAnimations();
+}
+
+/* ---------- Shell behavior (mirrors abisShellScript) ---------- */
+var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (!REDUCED) document.documentElement.classList.add('js-anim');
+
+window.abisToggleSidebar = function(open, instant){
+  var sb=document.getElementById('abisSidebar'), bd=document.querySelector('[data-abis-backdrop]'), btn=document.querySelector('.abis-hamburger');
+  if(!sb||!bd) return;
+  if(instant){ sb.classList.add('no-anim'); bd.classList.add('no-anim'); }
+  sb.classList.toggle('open', open); bd.classList.toggle('open', open);
+  if(btn) btn.setAttribute('aria-expanded', open?'true':'false');
+  if(instant){ requestAnimationFrame(function(){ sb.classList.remove('no-anim'); bd.classList.remove('no-anim'); }); }
+};
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') window.abisToggleSidebar(false, true); });
+
+function animateCounter(el){
+  var target=parseFloat(el.dataset.value); if(isNaN(target)) return;
+  if(REDUCED){ el.textContent=target.toLocaleString(); return; }
+  var dur=800, start=performance.now();
+  (function up(t){ var p=Math.min((t-start)/dur,1), e=1-Math.pow(1-p,4);
+    el.textContent=Math.round(target*e).toLocaleString(); if(p<1) requestAnimationFrame(up); })(start);
+}
+var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function(entries){
+  entries.forEach(function(en){ if(!en.isIntersecting) return; var el=en.target;
+    if(el.matches('.abis-stat-value[data-value]')) animateCounter(el);
+    if(el.matches('.abis-progress > span[data-progress]')) el.style.width=(el.dataset.progress||0)+'%';
+    io.unobserve(el); }); },{threshold:0.3}) : null;
+
+function bindAnimations(){
+  var c=document.querySelectorAll('.abis-stat-value[data-value]'), b=document.querySelectorAll('.abis-progress > span[data-progress]');
+  if(io){ c.forEach(function(el){io.observe(el);}); b.forEach(function(el){io.observe(el);}); }
+  else { c.forEach(animateCounter); b.forEach(function(el){el.style.width=(el.dataset.progress||0)+'%';}); }
+}
+
+// Allow parent frame to switch roles
+window.addEventListener('message', function(e){ if(e.data && e.data.abisRole) renderRole(e.data.abisRole); });
+
+var params = new URLSearchParams(location.search);
+renderRole(params.get('role') || 'tech');
+</script>
+</body>
+</html>

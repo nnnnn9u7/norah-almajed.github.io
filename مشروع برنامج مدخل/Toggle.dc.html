@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<button type="button" role="switch" aria-checked="{{ on }}" aria-label="{{ label }}" onClick="{{ onToggle }}" style="display:flex;align-items:center;justify-content:space-between;width:100%;background:#fff;border:1px solid rgba(10,37,64,0.10);border-radius:12px;padding:14px;box-shadow:0 2px 16px rgba(10,37,64,0.06);cursor:pointer;margin-bottom:8px;font-family:'IBM Plex Sans Arabic',sans-serif" style-active="transform:scale(0.98)">
+  <span style="display:flex;align-items:center;gap:10px">
+    <i data-lucide="{{ icon }}" style="width:20px;height:20px;color:#0A2540"></i>
+    <span style="font-weight:600;font-size:13px;color:#0A2540">{{ label }}</span>
+  </span>
+  <span style="position:relative;width:46px;height:26px;border-radius:13px;flex:none;transition:background 220ms cubic-bezier(0.34,1.56,0.64,1);background:{{ trackBg }}">
+    <span style="position:absolute;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(10,37,64,0.25);transition:all 220ms cubic-bezier(0.34,1.56,0.64,1);{{ thumbPos }}">
+      <span style="width:4px;height:4px;border-radius:50%;background:#00F5D4;transition:opacity 180ms ease;opacity:{{ dotOpacity }}"></span>
+    </span>
+  </span>
+</button>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:320,&quot;height&quot;:56},&quot;on&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;label&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;خيار&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;icon&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;wrench&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;onToggle&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;() =&gt; void&quot;}}">
+class Component extends DCLogic {
+  componentDidMount(){ this.icons(); }
+  componentDidUpdate(){ this.icons(); }
+  icons(){ if(window.lucide){ try{ window.lucide.createIcons(); }catch(e){} } }
+  renderVals(){
+    const on = !!this.props.on;
+    return {
+      on,
+      icon: this.props.icon || 'circle',
+      label: this.props.label || '',
+      onToggle: this.props.onToggle || (()=>{}),
+      trackBg: on ? '#0A2540' : '#E8ECF0',
+      thumbPos: on ? 'left:3px;' : 'right:3px;',
+      dotOpacity: on ? 1 : 0,
+    };
+  }
+}
+</script>
+</body>
+</html>
